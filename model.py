@@ -10,8 +10,9 @@ class MRSClassfication(pl.LightningModule):
 
     def __init__(self,model_name,model_hparams,learning_rate=0.001,multi_class=False):
         super().__init__()
+        self.model_name = model_name
 
-        self.model = self.create_model(model_name,model_hparams)
+        self.model = self.create_model(self.model_name,model_hparams)
         self.multi_class = multi_class
         self.loss = nn.CrossEntropyLoss() if self.multi_class else nn.BCEWithLogitsLoss()
         self.learning_rate = learning_rate
@@ -32,7 +33,12 @@ class MRSClassfication(pl.LightningModule):
 
     def training_step(self, batch, batch_idx):
         x, y, _ = batch
-        y_pred = self(x)
+
+        if self.model_name == 'ViT':
+            y_pred,_ = self(x)
+        else :
+            y_pred= self(x)
+
         loss = self.loss(y_pred, y)
         self.log("train_loss", loss, on_epoch=True, prog_bar=True, logger=True)
 
@@ -40,7 +46,12 @@ class MRSClassfication(pl.LightningModule):
 
     def validation_step(self, batch, batch_idx):
         x, y, _ = batch
-        y_pred = self(x)
+
+        if self.model_name == 'ViT':
+            y_pred,_ = self(x)
+        else :
+            y_pred= self(x)
+
         loss = self.loss (y_pred, y)
         self.log("val_loss", loss, on_epoch=True, prog_bar=True, logger=True)
 
@@ -68,7 +79,11 @@ class MRSClassfication(pl.LightningModule):
 
     def test_step(self, batch, batch_idx):
         x, y, _ = batch
-        y_pred = self.model(x)
+        
+        if self.model_name == 'ViT':
+            y_pred,_ = self(x)
+        else :
+            y_pred= self(x)
 
         return y_pred, y
     
