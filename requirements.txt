@@ -4,5 +4,4 @@ pytorch-lightning
 monai
 torchio
 numpy
-yaml
 torchmetrics
