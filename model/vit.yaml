@@ -6,3 +6,5 @@ model_hparams :
   pos_embed : 'conv'
   classification : True
   num_classes : 1
+  num_layers : 8
+  num_heads : 8
