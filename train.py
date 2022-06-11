@@ -10,13 +10,10 @@ from dataloader import BrainDataModule
 import json
 import argparse
 import yaml
-import torch, gc
+import torch
 import warnings
 
 warnings.filterwarnings(action='ignore')
-
-gc.collect()
-torch.cuda.empty_cache()
 
 pl.seed_everything(42)
 
@@ -29,7 +26,7 @@ def train(model_name,model_hparams,data_dir,save_dir,epoch,accelerator,device,ba
     checkpoint_callback = pl.callbacks.ModelCheckpoint(dirpath=save_dir, save_top_k=2, monitor="val_auc")
     
     if device > 1:
-        trainer = pl.Trainer(accelerator=accelerator, devices=device, precision=16,max_epochs=epoch,callbacks=[checkpoint_callback],strategy="ddp")
+        trainer = pl.Trainer(accelerator=accelerator, devices=device, precision=16,max_epochs=epoch,callbacks=[checkpoint_callback],strategy="dp")
     else :
         trainer = pl.Trainer(accelerator=accelerator, devices=device, precision=16,max_epochs=epoch,callbacks=[checkpoint_callback])
 
