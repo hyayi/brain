@@ -26,6 +26,7 @@ def train(model_name,model_hparams,data_dir,save_dir,epoch,accelerator,device,ba
     checkpoint_callback = pl.callbacks.ModelCheckpoint(dirpath=save_dir, save_top_k=2, monitor="val_auc")
     
     if device > 1:
+        data_dm.prepare_data()
         trainer = pl.Trainer(accelerator=accelerator, devices=device, precision=16,max_epochs=epoch,callbacks=[checkpoint_callback],strategy="ddp")
     else :
         trainer = pl.Trainer(accelerator=accelerator, devices=device, precision=16,max_epochs=epoch,callbacks=[checkpoint_callback])
