@@ -48,6 +48,10 @@ class BrainDataModule(pl.LightningDataModule):
         self.val = pd.read_csv(f"{self.data_dir}/validation.csv") 
         self.test = pd.read_csv(f"{self.data_dir}/test.csv")
         
+        self.train['image'] = self.train['image'].apply(lambda x : f"{x}.nii.gz")
+        self.val['image'] = self.val['image'].apply(lambda x : f"{x}.nii.gz")
+        self.test['image'] = self.test['image'].apply(lambda x : f"{x}.nii.gz")
+       
         self.train['image'] = self.train['image'].apply(lambda x : os.sep.join([self.data_dir, x]))
         self.val['image'] = self.val['image'].apply(lambda x : os.sep.join([self.data_dir, x]))
         self.test['image'] = self.test['image'].apply(lambda x : os.sep.join([self.data_dir, x]))
