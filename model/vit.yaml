@@ -2,10 +2,8 @@ model_name : "ViT"
 model_hparams : 
   in_channels : 1
   img_size : !!python/tuple [256,256,36]
-  patch_size : !!python/tuple [8,8,6]
   pos_embed : 'conv'
   classification : True
   num_classes : 1
   num_heads : 4
   num_layers : 3
-  mlp_dim : 1024
