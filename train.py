@@ -27,8 +27,11 @@ def train(model_name,model_hparams,data_dir,save_dir,epoch,accelerator,device,ba
     model = MRSClassfication(model_name,model_hparams)
     data_dm = BrainDataModule(data_dir,batch_size,num_workers,pin_memory)
     checkpoint_callback = pl.callbacks.ModelCheckpoint(dirpath=save_dir, save_top_k=2, monitor="val_auc")
-
-    trainer = pl.Trainer(accelerator=accelerator, devices=device, precision=16,max_epochs=150,callbacks=[checkpoint_callback])
+    
+    if devices > 1:
+        trainer = pl.Trainer(accelerator=accelerator, devices=device, precision=16,max_epochs=150,callbacks=[checkpoint_callback],strategy="deepspeed_stage_2")
+    else :
+        trainer = pl.Trainer(accelerator=accelerator, devices=device, precision=16,max_epochs=150,callbacks=[checkpoint_callback])
 
     ##모델학습 
     trainer.fit(model,data_dm)
