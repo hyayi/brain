@@ -1,4 +1,4 @@
-padnas
+pandas
 scikit-learn
 pytorch-lightning
 monai
