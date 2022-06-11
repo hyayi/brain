@@ -1,0 +1,5 @@
+model_name : "SEResNet50"
+model_hparams : 
+  spatial_dims : 3 
+  in_channels : 1 
+  num_classes : 1

@@ -1,0 +1,11 @@
+model_name : "ViT"
+model_hparams : 
+  in_channels : 1
+  img_size : (256,256,30)
+  patch_size : 8
+  pos_embed : 'conv'
+  classification : True
+  num_classes : 1
+  num_heads : 8
+  num_layers : 6
+  mlp_dim : 2048
