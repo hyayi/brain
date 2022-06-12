@@ -23,7 +23,7 @@ def train(model_name,model_hparams,data_dir,save_dir,epoch,accelerator,device,ba
 
     model = MRSClassfication(model_name,model_hparams)
     data_dm = BrainDataModule(data_dir,batch_size,num_workers,pin_memory)
-    checkpoint_callback = pl.callbacks.ModelCheckpoint(dirpath=save_dir, save_top_k=1, monitor="val_auc",filename='{}-{epoch:02d}-{val_auc:.2f}'.format(model_name))
+    checkpoint_callback = pl.callbacks.ModelCheckpoint(dirpath=save_dir, save_top_k=1, monitor="val_auc",filename='{model_name}-{epoch:02d}-{val_auc:.2f}')
     
     if device > 1:
         data_dm.prepare_data()
