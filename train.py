@@ -41,7 +41,7 @@ def train(model_name,model_hparams,data_dir,save_dir,epoch,accelerator,device,ba
     data_dm.prepare_data()
     data_dm.setup()
     
-    best_model = MRSClassfication.load_from_checkpoint(checkpoint_callback.best_model_path,modelname=model_name,model_hparams=model_hparams)
+    best_model = MRSClassfication.load_from_checkpoint(checkpoint_callback.best_model_path,model_name=model_name,model_hparams=model_hparams)
     
     trainer.test(best_model, dataloaders=data_dm.test_dataloader())
 
