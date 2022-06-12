@@ -37,6 +37,8 @@ def train(model_name,model_hparams,data_dir,save_dir,epoch,accelerator,device,ba
     checkpoint_callback.best_model_path
 
     ##test
+    data_dm.prepare_data()
+    data_dm.set_up()
     trainer.test(dataloaders = data_dm.test_dataloader())
 
 if __name__=="__main__" :
