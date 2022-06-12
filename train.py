@@ -34,10 +34,10 @@ def train(model_name,model_hparams,data_dir,save_dir,epoch,accelerator,device,ba
     ##모델학습 
     trainer.fit(model,data_dm)
     trainer.save_checkpoint(f"{model_name}.ckpt")
-    #checkpoint_callback.best_model_path
+    checkpoint_callback.best_model_path
 
     ##test
-    #trainer.test()
+    trainer.test()
 
 if __name__=="__main__" :
 
