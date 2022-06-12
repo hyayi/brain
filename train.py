@@ -39,7 +39,7 @@ def train(model_name,model_hparams,data_dir,save_dir,epoch,accelerator,device,ba
     
     print(checkpoint_callback.best_model_path)
     data_dm.prepare_data()
-    data_dm.set_up()
+    data_dm.setup()
     
     best_model = model.load_from_checkpoint(checkpoint_callback.best_model_path)
     
