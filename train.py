@@ -37,7 +37,7 @@ def train(model_name,model_hparams,data_dir,save_dir,epoch,accelerator,device,ba
     checkpoint_callback.best_model_path
 
     ##test
-    trainer.test()
+    trainer.test(data_dm)
 
 if __name__=="__main__" :
 
