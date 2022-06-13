@@ -37,9 +37,9 @@ def train(model_name,model_hparams,data_dir,save_dir,epoch,accelerator,device,ba
     
     if device > 1:
         data_dm.prepare_data()
-        trainer = pl.Trainer(accelerator=accelerator, devices=device, precision=16,max_epochs=epoch,callbacks=[checkpoint_callback],strategy="ddp")
+        trainer = pl.Trainer(accelerator=accelerator, devices=device, precision=16,max_epochs=epoch,callbacks=[checkpoint_callback],strategy="ddp",logger=tb_logger)
     else :
-        trainer = pl.Trainer(accelerator=accelerator, devices=device, precision=16,max_epochs=epoch,callbacks=[checkpoint_callback])
+        trainer = pl.Trainer(accelerator=accelerator, devices=device, precision=16,max_epochs=epoch,callbacks=[checkpoint_callback],logger=tb_logger)
 
     ##모델학습 
     trainer.fit(model,data_dm)
