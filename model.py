@@ -100,5 +100,9 @@ class MRSClassfication(pl.LightningModule):
 
         auc  = AUROC()
         auc_score = auc(y_preds.squeeze(),ys.squeeze())
+        
+        
 
         print(f"test_set_auc_score : {auc_score:.4f}")
+        
+        self.log("test_auc", auc_score,prog_bar=True, logger=True) 
