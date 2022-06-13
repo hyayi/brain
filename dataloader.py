@@ -12,7 +12,7 @@ from monai.data import ImageDataset
 from monai.transforms import AddChannel,  ScaleIntensity, EnsureType, Spacing,Compose,RandAdjustContrast
 
 import torchio as tio
-from torchio.transforms import CropOrPad
+from torchio.transforms import CropOrPad, ZNormalization
 
 import pytorch_lightning as pl
 
@@ -58,8 +58,8 @@ class BrainDataModule(pl.LightningDataModule):
 
     def setup(self, stage = None):
 
-        train_transform = TestCompose([AddChannel() , Spacing(pixdim=(1, 1, 3.0)),CropOrPad((256, 256, 35)),RandAdjustContrast(),ScaleIntensity(),EnsureType()])
-        val_transform =  TestCompose([AddChannel(), Spacing(pixdim=(1, 1, 3.0)),CropOrPad((256, 256, 35)),ScaleIntensity(),EnsureType()])
+        train_transform = TestCompose([AddChannel() , Spacing(pixdim=(1, 1, 3.0)),CropOrPad((256, 256, 35)),RandAdjustContrast(),ZNormalization(masking_method=tio.ZNormalization.mean),EnsureType()])
+        val_transform =  TestCompose([AddChannel(), Spacing(pixdim=(1, 1, 3.0)),CropOrPad((256, 256, 35)),ZNormalization(masking_method=tio.ZNormalization.mean),EnsureType()])
 
         if stage == 'fit' or stage is None:
             self.train_ds = ImageDataset(image_files=self.train['image'], labels=np.expand_dims(self.train['label'].values, axis=1).astype(np.float32), transform=train_transform,image_only=False,transform_with_metadata=True)
