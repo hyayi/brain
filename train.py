@@ -25,7 +25,7 @@ def train(model_name,model_hparams,data_dir,save_dir,epoch,accelerator,device,ba
     ## train 
     
     logs_path = f"{save_dir}logs/{model_name}/"
-    os.makedirs(f"{logs_path}, exist_ok=True)
+    os.makedirs(f"{logs_path}", exist_ok=True)
     
     if os.path.exists(logs_path):
         shutil.rmtree(logs_path)
