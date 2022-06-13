@@ -13,6 +13,9 @@ import yaml
 import torch
 import warnings
 
+from pytorch_lightning import loggers as pl_loggers
+import shutil
+
 warnings.filterwarnings(action='ignore')
 
 pl.seed_everything(42)
@@ -20,10 +23,17 @@ pl.seed_everything(42)
 
 def train(model_name,model_hparams,data_dir,save_dir,epoch,accelerator,device,batch_size=32,num_workers=3,pin_memory=True):
     ## train 
-
+    
+    logs_path = {save_dir}logs/{model_name}/
+    os.makedirs(f"{logs_path}, exist_ok=True)
+    
+    if os.path.exists(logs_path):
+        shutil.rmtree(logs_path)
+    
     model = MRSClassfication(model_name,model_hparams)
     data_dm = BrainDataModule(data_dir,batch_size,num_workers,pin_memory)
     checkpoint_callback = pl.callbacks.ModelCheckpoint(dirpath=save_dir, save_top_k=1, monitor="val_auc",filename=f'{model_name}'+'-{epoch:02d}-{val_auc:.2f}',mode='max')
+    tb_logger = pl_loggers.TensorBoardLogger(save_dir=f"{logs_path}")
     
     if device > 1:
         data_dm.prepare_data()
