@@ -24,7 +24,7 @@ pl.seed_everything(42)
 def train(model_name,model_hparams,data_dir,save_dir,epoch,accelerator,device,batch_size=32,num_workers=3,pin_memory=True):
     ## train 
     
-    logs_path = {save_dir}logs/{model_name}/
+    logs_path = f"{save_dir}logs/{model_name}/"
     os.makedirs(f"{logs_path}, exist_ok=True)
     
     if os.path.exists(logs_path):
