@@ -65,7 +65,7 @@ class MRSClassfication(pl.LightningModule):
             y_preds.extend(y_pred)
             ys.extend(y)
 
-        y_preds = torch.stack(y_preds)
+        y_preds = F.sigmoid(torch.stack(y_preds))
         ys = torch.stack(ys).type(torch.int)
 
         auc  = AUROC()
@@ -95,9 +95,11 @@ class MRSClassfication(pl.LightningModule):
             y_preds.extend(y_pred)
             ys.extend(y)
 
-        y_preds = torch.stack(y_preds)
+        y_preds =F.sigmoid(torch.stack(y_preds))
+        print(y_preds.shape)
         ys = torch.stack(ys).type(torch.int)
-
+        print(ys.shape)
+        
         auc  = AUROC()
         auc_score = auc(y_preds.squeeze(),ys.squeeze())
         
