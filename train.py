@@ -32,7 +32,7 @@ def train(model_name,model_hparams,data_dir,save_dir,epoch,accelerator,device,ba
     
     model = MRSClassfication(model_name,model_hparams)
     data_dm = BrainDataModule(data_dir,batch_size,num_workers,pin_memory)
-    checkpoint_callback = pl.callbacks.ModelCheckpoint(dirpath=f{save_dir}weight, save_top_k=1, monitor="val_auc",filename=f'{model_name}'+'-{epoch:02d}-{val_auc:.2f}',mode='max')
+    checkpoint_callback = pl.callbacks.ModelCheckpoint(dirpath=f"{save_dir}weight", save_top_k=1, monitor="val_auc",filename=f'{model_name}'+'-{epoch:02d}-{val_auc:.2f}',mode='max')
     tb_logger = pl_loggers.TensorBoardLogger(save_dir=f"{logs_path}")
     
     if device > 1:
