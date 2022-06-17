@@ -23,7 +23,7 @@ class MRSClassfication(pl.LightningModule):
             return monai.networks.nets.DenseNet121(**model_hparams)
         elif model_name == 'ViT':
             model = monai.networks.nets.ViT(**model_hparams)
-            model.classification_head = nn.Linear(model_hparams.hidden_size, model_hparams.num_classes)
+            model.classification_head = nn.Linear(model_hparams['hidden_size'], model_hparams['num_classes'])
             return model
         elif model_name == 'SEResNet101':
             return monai.networks.nets.SEResNet101(**model_hparams)
