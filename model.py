@@ -22,9 +22,7 @@ class MRSClassfication(pl.LightningModule):
         if model_name == 'DenseNet121':
             return monai.networks.nets.DenseNet121(**model_hparams)
         elif model_name == 'ViT':
-            model = monai.networks.nets.ViT(**model_hparams)
-            model.classification_head = nn.Linear(model_hparams['hidden_size'], model_hparams['num_classes'])
-            return model
+            return monai.networks.nets.ViT(**model_hparams)
         elif model_name == 'SEResNet101':
             return monai.networks.nets.SEResNet101(**model_hparams)
         else :
@@ -67,7 +65,11 @@ class MRSClassfication(pl.LightningModule):
             y_preds.extend(y_pred)
             ys.extend(y)
 
-        y_preds = F.sigmoid(torch.stack(y_preds))
+        if self.model_name == 'ViT':
+            y_preds = torch.stack(y_preds)
+        else :
+            y_preds = F.sigmoid(torch.stack(y_preds))
+            
         ys = torch.stack(ys).type(torch.int)
 
         auc  = AUROC()
@@ -97,10 +99,13 @@ class MRSClassfication(pl.LightningModule):
             y_preds.extend(y_pred)
             ys.extend(y)
 
-        y_preds =F.sigmoid(torch.stack(y_preds))
-        print(y_preds.shape)
+        if self.model_name == 'ViT':
+            y_preds = torch.stack(y_preds)
+        else : 
+            y_preds = F.sigmoid(torch.stack(y_preds))
+
         ys = torch.stack(ys).type(torch.int)
-        print(ys.shape)
+
         
         auc  = AUROC()
         auc_score = auc(y_preds.squeeze(),ys.squeeze())
