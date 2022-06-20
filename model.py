@@ -67,11 +67,7 @@ class MRSClassfication(pl.LightningModule):
             y_preds.extend(y_pred)
             ys.extend(y)
 
-        if self.model_name == 'ViT':
-            print('ok')
-            y_preds = torch.stack(y_preds)
-        else :
-            y_preds = F.sigmoid(torch.stack(y_preds))
+        y_preds = F.sigmoid(torch.stack(y_preds))
             
         ys = torch.stack(ys).type(torch.int)
 
@@ -102,10 +98,7 @@ class MRSClassfication(pl.LightningModule):
             y_preds.extend(y_pred)
             ys.extend(y)
 
-        if self.model_name == 'ViT':
-            y_preds = torch.stack(y_preds)
-        else : 
-            y_preds = F.sigmoid(torch.stack(y_preds))
+        y_preds = F.sigmoid(torch.stack(y_preds))
 
         ys = torch.stack(ys).type(torch.int)
 
