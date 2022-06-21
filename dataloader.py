@@ -58,7 +58,7 @@ class BrainDataModule(pl.LightningDataModule):
 
     def setup(self, stage = None):
 
-        train_transform = TestCompose([AddChannel() , Spacing(pixdim=(1, 1, 3.0)),CropOrPad((256, 256, 35)),RandAdjustContrast(),ZNormalization(masking_method=tio.ZNormalization.mean),EnsureType()])
+        train_transform = TestCompose([AddChannel() , Spacing(pixdim=(1, 1, 3.0)),CropOrPad((256, 256, 45)),RandAdjustContrast(),ZNormalization(masking_method=tio.ZNormalization.mean),EnsureType()])
         val_transform =  TestCompose([AddChannel(), Spacing(pixdim=(1, 1, 3.0)),CropOrPad((256, 256, 35)),ZNormalization(masking_method=tio.ZNormalization.mean),EnsureType()])
 
         if stage == 'fit' or stage is None:
