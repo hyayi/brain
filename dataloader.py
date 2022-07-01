@@ -90,6 +90,7 @@ class BrainDataModule(pl.LightningDataModule):
             ),
             Orientation(axcodes="RAS"),
             ResizeWithPadOrCrop((209, 220,  47)),
+            NormalizeIntensity(nonzero=True, channel_wise=True),
             ToTensor(),
         ])
 
