@@ -34,7 +34,7 @@ class TestCompose(Compose):
         data = self.transforms[3](data)  # reisze
         data = self.transforms[4](data) # NormalizeIntensity
 
-        if len(self.transforms) > 5: 
+        if len(self.transforms) > 6: 
             data = self.transforms[5](data) # RandScaleIntensity
             data = self.transforms[6](data) # RandShiftIntensity
 
