@@ -16,7 +16,7 @@ from monai.transforms import (
     AddChannel,
     RandScaleIntensity,
     RandShiftIntensity,
-    ToTensord,
+    ToTensor,
     Compose,
     Orientation
 )
@@ -63,7 +63,7 @@ class BrainDataModule(pl.LightningDataModule):
             NormalizeIntensity(nonzero=True, channel_wise=True),
             RandScaleIntensity(factors=0.1, prob=0.5),
             RandShiftIntensity(offsets=0.1, prob=0.5),
-            ToTensord(),
+            ToTensor(),
         ])
         val_transform = Compose(
         [
@@ -73,7 +73,7 @@ class BrainDataModule(pl.LightningDataModule):
             ),
             Orientation(axcodes="RAS"),
             ResizeWithPadOrCrop((209, 220,  47)),
-            ToTensord(),
+            ToTensor(),
         ])
 
         if stage == 'fit' or stage is None:
