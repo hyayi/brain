@@ -16,14 +16,29 @@ from monai.transforms import (
     AddChannel,
     RandScaleIntensity,
     RandShiftIntensity,
-    ToTensor,
-    Compose,
-    Orientation
+    ToTensord
 )
 
 
 import pytorch_lightning as pl
 
+
+class TestCompose(Compose):
+    def __call__(self, data, meta):
+
+        data = self.transforms[0](data) # addchannell
+        data, _, meta["affine"] = self.transforms[1](data, meta["affine"])# spacing
+        data, _, meta["affine"] = self.transforms[2](data, meta["affine"])# Orientation
+        data = self.transforms[3](data)  # reisze
+        data = self.transforms[4](data) # NormalizeIntensity
+
+        if len(self.transforms) > 5: 
+            data = self.transforms[5](data) # RandScaleIntensity
+            data = self.transforms[6](data) # RandShiftIntensity
+
+        data = self.transforms[-1](data) # totensro
+
+        return data,meta
 
 
 class BrainDataModule(pl.LightningDataModule):
@@ -52,7 +67,7 @@ class BrainDataModule(pl.LightningDataModule):
 
     def setup(self, stage = None):
 
-        train_transform = Compose(
+        train_transform = TestCompose(
         [
             AddChannel(),
             Spacing(
@@ -63,9 +78,9 @@ class BrainDataModule(pl.LightningDataModule):
             NormalizeIntensity(nonzero=True, channel_wise=True),
             RandScaleIntensity(factors=0.1, prob=0.5),
             RandShiftIntensity(offsets=0.1, prob=0.5),
-            ToTensor(),
+            ToTensord(),
         ])
-        val_transform = Compose(
+        val_transform = TestCompose(
         [
             AddChannel(),
             Spacing(
@@ -73,7 +88,7 @@ class BrainDataModule(pl.LightningDataModule):
             ),
             Orientation(axcodes="RAS"),
             ResizeWithPadOrCrop((209, 220,  47)),
-            ToTensor(),
+            ToTensord(),
         ])
 
         if stage == 'fit' or stage is None:
