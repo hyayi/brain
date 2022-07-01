@@ -16,7 +16,8 @@ from monai.transforms import (
     AddChannel,
     RandScaleIntensity,
     RandShiftIntensity,
-    ToTensord
+    ToTensord,
+    Compose
 )
 
 
