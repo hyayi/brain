@@ -17,7 +17,8 @@ from monai.transforms import (
     RandScaleIntensity,
     RandShiftIntensity,
     ToTensord,
-    Compose
+    Compose,
+    Orientation
 )
 
 
