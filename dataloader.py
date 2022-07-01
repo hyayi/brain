@@ -9,27 +9,19 @@ from torch.utils.data import DataLoader
 
 import monai
 from monai.data import ImageDataset
-from monai.transforms import AddChannel,  ScaleIntensity, EnsureType, Spacing,Compose,RandAdjustContrast
+from monai.transforms import (
+    Spacing,
+    ResizeWithPadOrCrop,
+    NormalizeIntensity,
+    AddChannel,
+    RandScaleIntensity,
+    RandShiftIntensity,
+    ToTensord
+)
 
-import torchio as tio
-from torchio.transforms import CropOrPad, ZNormalization
 
 import pytorch_lightning as pl
 
-class TestCompose(Compose):
-    def __call__(self, data, meta):
-        data = self.transforms[0](data) # addchannell
-        data, _, meta["affine"] = self.transforms[1](data, meta["affine"])# spacing
-        data = self.transforms[2](data)  # pad
-        if len(self.transforms) == 6: 
-            data = self.transforms[3](data) # randconst
-            data = self.transforms[4](data) # scale
-            data = self.transforms[5](data) # totensro
-        else :
-            data = self.transforms[3](data) # scale
-            data = self.transforms[4](data) # totensro
-
-        return data,meta
 
 
 class BrainDataModule(pl.LightningDataModule):
@@ -58,8 +50,29 @@ class BrainDataModule(pl.LightningDataModule):
 
     def setup(self, stage = None):
 
-        train_transform = TestCompose([AddChannel() , Spacing(pixdim=(1, 1, 2)),CropOrPad((256, 256, 35)),RandAdjustContrast(),ZNormalization(masking_method=tio.ZNormalization.mean),EnsureType()])
-        val_transform =  TestCompose([AddChannel(), Spacing(pixdim=(1, 1, 2)),CropOrPad((256, 256, 35)),ZNormalization(masking_method=tio.ZNormalization.mean),EnsureType()])
+        train_transform = Compose(
+        [
+            AddChannel(),
+            Spacing(
+                pixdim=(1.5,1.5,6),
+            ),
+            Orientation(axcodes="RAS"),
+            ResizeWithPadOrCrop((209, 220,  47)),
+            NormalizeIntensity(nonzero=True, channel_wise=True),
+            RandScaleIntensity(factors=0.1, prob=0.5),
+            RandShiftIntensity(offsets=0.1, prob=0.5),
+            ToTensord(),
+        ])
+        val_transform = Compose(
+        [
+            AddChannel(),
+            Spacing(
+                pixdim=(1.5,1.5,6),
+            ),
+            Orientation(axcodes="RAS"),
+            ResizeWithPadOrCrop((209, 220,  47)),
+            ToTensord(),
+        ])
 
         if stage == 'fit' or stage is None:
             self.train_ds = ImageDataset(image_files=self.train['image'], labels=np.expand_dims(self.train['label'].values, axis=1).astype(np.float32), transform=train_transform,image_only=False,transform_with_metadata=True)
