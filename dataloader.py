@@ -18,7 +18,8 @@ from monai.transforms import (
     RandShiftIntensity,
     ToTensor,
     Compose,
-    Orientation
+    Orientation,
+    Resize
 )
 
 
@@ -73,10 +74,11 @@ class BrainDataModule(pl.LightningDataModule):
         [
             AddChannel(),
             Spacing(
-                pixdim=(1.5,1.5,6),
+                pixdim=(1.0,1.0,5),
             ),
             Orientation(axcodes="RAS"),
-            ResizeWithPadOrCrop((209, 220,  47)),
+            Resize(256,256,36),
+            #ResizeWithPadOrCrop((209, 220,  47)),
             NormalizeIntensity(nonzero=True, channel_wise=True),
             RandScaleIntensity(factors=0.1, prob=0.5),
             RandShiftIntensity(offsets=0.1, prob=0.5),
@@ -89,7 +91,8 @@ class BrainDataModule(pl.LightningDataModule):
                 pixdim=(1.5,1.5,6),
             ),
             Orientation(axcodes="RAS"),
-            ResizeWithPadOrCrop((209, 220,  47)),
+            Resize(256,256,36),
+            #ResizeWithPadOrCrop((209, 220,  47)),
             NormalizeIntensity(nonzero=True, channel_wise=True),
             ToTensor(),
         ])
