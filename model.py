@@ -31,7 +31,7 @@ class MRSClassfication(pl.LightningModule):
             return monai.networks.nets.SEResNet101(**model_hparams)
         elif model_name == 'EfficientNetBN':
             return monai.networks.nets.EfficientNetBN(**model_hparams)
-        elif model_name == resnet50:
+        elif model_name == 'resnet50':
             return resnet50(**model_hparams)
         else :
             assert False, f'Unknown model name "{model_name}".'
