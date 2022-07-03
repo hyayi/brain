@@ -73,7 +73,7 @@ class MRSClassfication(pl.LightningModule):
             
         ys = torch.stack(ys).type(torch.int)
 
-        auc  = AUROC(numclass=2, average='micro')
+        auc  = AUROC(num_classes=2, average='micro')
         
         auc_score = auc(y_preds.squeeze(),ys.squeeze())
 
@@ -107,7 +107,7 @@ class MRSClassfication(pl.LightningModule):
         ys = torch.stack(ys).type(torch.int)
 
         
-        auc  = AUROC(numclass=2, average='micro')
+        auc  = AUROC(num_classes=2, average='micro')
         auc_score = auc(y_preds.squeeze(),ys.squeeze())
 
 
