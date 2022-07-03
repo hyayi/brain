@@ -98,7 +98,7 @@ class BrainDataModule(pl.LightningDataModule):
         ])
 
         if stage == 'fit' or stage is None:
-            self.train_ds = ImageDataset(image_files=self.train['image'], labels=np.self.train['label'].values, transform=train_transform,image_only=False,transform_with_metadata=True)
+            self.train_ds = ImageDataset(image_files=self.train['image'], labels=self.train['label'].values, transform=train_transform,image_only=False,transform_with_metadata=True)
             self.validation_ds = ImageDataset(image_files=self.val['image'], labels=self.val['label'].values, transform=val_transform,image_only=False,transform_with_metadata=True)
         if stage == 'test' or stage is None:
             self.test_ds = ImageDataset(image_files=self.test['image'], labels=self.test['label'].values, transform=val_transform,image_only=False,transform_with_metadata=True)
