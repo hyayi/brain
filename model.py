@@ -27,7 +27,7 @@ class MRSClassfication(pl.LightningModule):
             return model
         elif model_name == 'SEResNet101':
             return monai.networks.nets.SEResNet101(**model_hparams)
-        elif model_name == 'EfficientNetBN'
+        elif model_name == 'EfficientNetBN':
             return monai.networks.nets.EfficientNetBN(**model_hparams)
         else :
             assert False, f'Unknown model name "{model_name}".'
