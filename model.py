@@ -8,7 +8,7 @@ from torchmetrics import AUROC
 
 class MRSClassfication(pl.LightningModule):
 
-    def __init__(self,model_name,model_hparams,learning_rate=0.001,multi_class=False):
+    def __init__(self,model_name,model_hparams,learning_rate=0.001,multi_class=True):
         super().__init__()
         self.model_name = model_name
 
@@ -69,11 +69,11 @@ class MRSClassfication(pl.LightningModule):
             y_preds.extend(y_pred)
             ys.extend(y)
 
-        y_preds = F.sigmoid(torch.stack(y_preds))
+        y_preds = F.softamx(torch.stack(y_preds),axis=1))
             
         ys = torch.stack(ys).type(torch.int)
 
-        auc  = AUROC(pos_label=1)
+        auc  = AUROC(numclass=2, average='micro)
         
         auc_score = auc(y_preds.squeeze(),ys.squeeze())
 
@@ -102,12 +102,12 @@ class MRSClassfication(pl.LightningModule):
             y_preds.extend(y_pred)
             ys.extend(y)
 
-        y_preds = F.sigmoid(torch.stack(y_preds))
+        y_preds = F.softamx(torch.stack(y_preds),axis=1)
 
         ys = torch.stack(ys).type(torch.int)
 
         
-        auc  = AUROC(pos_label=1)
+        auc  = AUROC(numclass=2, average='micro)
         auc_score = auc(y_preds.squeeze(),ys.squeeze())
 
 
