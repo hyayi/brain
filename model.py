@@ -71,11 +71,15 @@ class MRSClassfication(pl.LightningModule):
             
         ys = torch.stack(ys).type(torch.int)
 
-        auc  = AUROC()
-        auc_score = auc(y_preds.squeeze(),ys.squeeze())
+        auc_macro  = AUROC()
+        auc_micro  = AUROC(average='micro')
+        
+        auc_score_macro = auc_macro(y_preds.squeeze(),ys.squeeze())
+        auc_score_micro = auc_micro(y_preds.squeeze(),ys.squeeze())
 
         #print(f"auc_score : {auc_score:.4f}")
-        self.log("val_auc", auc_score,prog_bar=True, logger=True) 
+        self.log("val_auc_macro", auc_score_macro,prog_bar=True, logger=True)
+        self.log("val_auc_micro", auc_score_micro,prog_bar=True, logger=True) 
 
     def configure_optimizers(self):
         return torch.optim.Adam(self.parameters(), lr=self.learning_rate, weight_decay=2e-5)
@@ -103,11 +107,13 @@ class MRSClassfication(pl.LightningModule):
         ys = torch.stack(ys).type(torch.int)
 
         
-        auc  = AUROC()
-        auc_score = auc(y_preds.squeeze(),ys.squeeze())
+        auc_macro  = AUROC()
+        auc_micro  = AUROC(average='micro')
         
-        
+        auc_score_macro = auc_macro(y_preds.squeeze(),ys.squeeze())
+        auc_score_micro = auc_micro(y_preds.squeeze(),ys.squeeze())
 
-        #print(f"test_set_auc_score : {auc_score:.4f}")
-        
-        self.log("test_auc", auc_score,prog_bar=True, logger=True) 
+        #print(f"auc_score : {auc_score:.4f}")
+        self.log("val_auc_macro", auc_score_macro,prog_bar=True, logger=True)
+        self.log("val_auc_micro", auc_score_micro,prog_bar=True, logger=True) 
+
