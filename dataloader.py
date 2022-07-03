@@ -78,7 +78,7 @@ class BrainDataModule(pl.LightningDataModule):
             ),
             Orientation(axcodes="RAS"),
             #Resize((256,256,36)),
-            ResizeWithPadOrCrop((205, 210,  36)),
+            ResizeWithPadOrCrop((209, 220,  47)),
             NormalizeIntensity(nonzero=True, channel_wise=True),
             RandScaleIntensity(factors=0.1, prob=0.5),
             RandShiftIntensity(offsets=0.1, prob=0.5),
@@ -92,7 +92,7 @@ class BrainDataModule(pl.LightningDataModule):
             ),
             Orientation(axcodes="RAS"),
             #Resize((256,256,36)),
-            ResizeWithPadOrCrop((205, 210,  36)),
+            ResizeWithPadOrCrop((209, 220,  47)),
             NormalizeIntensity(nonzero=True, channel_wise=True),
             ToTensor(),
         ])
