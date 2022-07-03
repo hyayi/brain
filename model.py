@@ -74,7 +74,7 @@ class MRSClassfication(pl.LightningModule):
         auc  = AUROC()
         auc_score = auc(y_preds.squeeze(),ys.squeeze())
 
-        print(f"auc_score : {auc_score:.4f}")
+        #print(f"auc_score : {auc_score:.4f}")
         self.log("val_auc", auc_score,prog_bar=True, logger=True) 
 
     def configure_optimizers(self):
@@ -108,6 +108,6 @@ class MRSClassfication(pl.LightningModule):
         
         
 
-        print(f"test_set_auc_score : {auc_score:.4f}")
+        #print(f"test_set_auc_score : {auc_score:.4f}")
         
         self.log("test_auc", auc_score,prog_bar=True, logger=True) 
