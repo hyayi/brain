@@ -1,0 +1,5 @@
+model_name : "resnet50"
+model_hparams : 
+  in_channels : 1
+  num_class : 1
+  pretrained : True
