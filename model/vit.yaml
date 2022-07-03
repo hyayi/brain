@@ -1,7 +1,7 @@
 model_name : "ViT"
 model_hparams : 
   in_channels : 1
-  img_size : !!python/tuple [205,210,36]
+  img_size : !!python/tuple [209,220,47]
   patch_size : 16
   pos_embed : 'conv'
   classification : True
