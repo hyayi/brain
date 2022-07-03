@@ -98,10 +98,10 @@ class BrainDataModule(pl.LightningDataModule):
         ])
 
         if stage == 'fit' or stage is None:
-            self.train_ds = ImageDataset(image_files=self.train['image'], labels=np.expand_dims(self.train['label'].values, axis=1).astype(np.float32), transform=train_transform,image_only=False,transform_with_metadata=True)
-            self.validation_ds = ImageDataset(image_files=self.val['image'], labels=np.expand_dims(self.val['label'].values, axis=1).astype(np.float32), transform=val_transform,image_only=False,transform_with_metadata=True)
+            self.train_ds = ImageDataset(image_files=self.train['image'], labels=np.self.train['label'].values, transform=train_transform,image_only=False,transform_with_metadata=True)
+            self.validation_ds = ImageDataset(image_files=self.val['image'], labels=self.val['label'].values, transform=val_transform,image_only=False,transform_with_metadata=True)
         if stage == 'test' or stage is None:
-            self.test_ds = ImageDataset(image_files=self.test['image'], labels=np.expand_dims(self.test['label'].values, axis=1).astype(np.float32), transform=val_transform,image_only=False,transform_with_metadata=True)
+            self.test_ds = ImageDataset(image_files=self.test['image'], labels=self.test['label'].values, transform=val_transform,image_only=False,transform_with_metadata=True)
 
     def train_dataloader(self):
         return DataLoader(self.train_ds, batch_size=self.batch_size,num_workers=self.num_workers, pin_memory=self.pin_memory,shuffle=True,)
