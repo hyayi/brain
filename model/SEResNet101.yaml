@@ -2,4 +2,4 @@ model_name : "SEResNet101"
 model_hparams : 
   spatial_dims : 3 
   in_channels : 1 
-  num_classes : 1
+  num_classes : 2
