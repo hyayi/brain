@@ -5,7 +5,7 @@ model_hparams :
   patch_size : 16
   pos_embed : 'conv'
   classification : True
-  num_classes : 1
+  num_classes : 2
   num_layers : 4
   num_heads : 4
   hidden_size : 768
