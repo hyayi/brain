@@ -69,7 +69,7 @@ class MRSClassfication(pl.LightningModule):
             y_preds.extend(y_pred)
             ys.extend(y)
 
-        y_preds = F.softamx(torch.stack(y_preds),axis=1))
+        y_preds = F.softamx(torch.stack(y_preds),axis=1)
             
         ys = torch.stack(ys).type(torch.int)
 
