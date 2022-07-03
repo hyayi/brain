@@ -77,7 +77,7 @@ class MRSClassfication(pl.LightningModule):
 
 
         #print(f"auc_score : {auc_score:.4f}")
-        self.log("val_auc_score", auc_score,prog_bar=True, logger=True)
+        self.log("val_auc", auc_score,prog_bar=True, logger=True)
 
     def configure_optimizers(self):
         return torch.optim.Adam(self.parameters(), lr=self.learning_rate, weight_decay=2e-5)
@@ -110,5 +110,5 @@ class MRSClassfication(pl.LightningModule):
 
 
         #print(f"auc_score : {auc_score:.4f}")
-        self.log("val_auc_score", auc_score,prog_bar=True, logger=True)
+        self.log("test_auc", auc_score,prog_bar=True, logger=True)
 
