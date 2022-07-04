@@ -42,6 +42,21 @@ class TestCompose(Compose):
         data = self.transforms[-1](data) # totensro
 
         return data,meta
+    
+class TestCompose2(Compose):
+    def __call__(self, data, meta):
+        data = self.transforms[0](data)
+        #data, _, meta["affine"] = self.transforms[1](data, meta["affine"])# spacing
+        data, _, meta["affine"] = self.transforms[1](data, meta["affine"])# Orientation
+        data = self.transforms[2](data)  # reisze
+        
+        if len(self.transforms) > 5: 
+            data = self.transforms[3](data) # RandScaleIntensity
+            data = self.transforms[4](data) # RandShiftIntensity
+
+        data = self.transforms[-1](data) # totensro
+
+        return data,meta
 
 
 class BrainDataModule(pl.LightningDataModule):
@@ -70,7 +85,7 @@ class BrainDataModule(pl.LightningDataModule):
 
     def setup(self, stage = None):
 
-        train_transform = TestCompose(
+        train_transform = TestCompose2(
         [
             #ScaleIntensity(),
             AddChannel(),
@@ -83,7 +98,7 @@ class BrainDataModule(pl.LightningDataModule):
             NormalizeIntensity(nonzero=True, channel_wise=True),
             ToTensor(),
         ])
-        val_transform = TestCompose(
+        val_transform = TestCompose2(
         [
             #ScaleIntensity(),
             AddChannel(),
