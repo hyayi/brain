@@ -18,7 +18,7 @@ import shutil
 
 warnings.filterwarnings(action='ignore')
 
-pl.seed_everything(42)
+pl.seed_everything(42, workers=True)
 
 
 def train(model_name,model_hparams,data_dir,save_dir,epoch,accelerator,device,batch_size=32,num_workers=3,pin_memory=True):
@@ -44,9 +44,9 @@ def train(model_name,model_hparams,data_dir,save_dir,epoch,accelerator,device,ba
     
     if device > 1:
         data_dm.prepare_data()
-        trainer = pl.Trainer(accelerator=accelerator, devices=device, precision=16,max_epochs=epoch,callbacks=[checkpoint_callback],strategy="ddp",logger=tb_logger)
+        trainer = pl.Trainer(accelerator=accelerator, devices=device, precision=16,max_epochs=epoch,callbacks=[checkpoint_callback],strategy="ddp",logger=tb_logger,deterministic=True)
     else :
-        trainer = pl.Trainer(accelerator=accelerator, devices=device, precision=16,max_epochs=epoch,callbacks=[checkpoint_callback],logger=tb_logger)
+        trainer = pl.Trainer(accelerator=accelerator, devices=device, precision=16,max_epochs=epoch,callbacks=[checkpoint_callback],logger=tb_logger,deterministic=True)
 
     ##모델학습 
     trainer.fit(model,data_dm)
