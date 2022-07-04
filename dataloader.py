@@ -87,7 +87,7 @@ class BrainDataModule(pl.LightningDataModule):
         [
             #ScaleIntensity(),
             AddChannel(),
-            Spacing(pixdim=(1.5,1.5,6)),
+            #Spacing(pixdim=(1.5,1.5,6)),
             Orientation(axcodes="RAS"),
             Resize((256,256,256)),
             #ResizeWithPadOrCrop((209, 220,  47)),
