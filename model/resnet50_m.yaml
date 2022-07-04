@@ -1,0 +1,5 @@
+model_name : "resnet50_m"
+model_hparams : 
+  n_input_channels : 1
+  num_classes : 1
+  pretrained_path : '/home/lab/inseo/brain/resnet_50_23dataset.pth'
