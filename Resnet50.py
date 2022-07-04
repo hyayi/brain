@@ -1,7 +1,7 @@
 import torchvision.models as models
 import torch
 import torch.nn as nn
-from monai.networks.nets import resnet50
+import monai
 
 class resnet50(nn.Module):
     def __init__(self,input_chanel=1,pretrained=True,num_class=1):
@@ -19,7 +19,7 @@ class resnet50(nn.Module):
 class resnet50_m(nn.Module):
     def __init__(self,n_input_channels=1,num_classes=1,pretrained_path=None):
         super().__init__()
-        self.model_ft = resnet50(n_input_channels=n_input_channels, num_classes=num_classes)
+        self.model_ft = monai.networks.nets.resnet50(n_input_channels=n_input_channels, num_classes=num_classes)
         if pretrained_path is not None:
             pretrain = torch.load(pretrained_path)
             pretrain['state_dict'] = {k.replace('module.', ''): v for k, v in pretrain['state_dict'].items()}
