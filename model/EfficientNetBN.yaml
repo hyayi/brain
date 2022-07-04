@@ -1,6 +1,6 @@
 model_name : "EfficientNetBN"
 model_hparams : 
-  model_name : "efficientnet-b7"
+  model_name : "efficientnet-b4"
   spatial_dims : 3 
   in_channels : 1 
   num_classes : 1
