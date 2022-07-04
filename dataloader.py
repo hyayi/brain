@@ -97,7 +97,6 @@ class BrainDataModule(pl.LightningDataModule):
             NormalizeIntensity(nonzero=True, channel_wise=True),
             #Resize((256,256,36)),
             ResizeWithPadOrCrop((209, 220,  47)),
-            NormalizeIntensity(nonzero=True, channel_wise=True),
             ToTensor(),
         ])
 
