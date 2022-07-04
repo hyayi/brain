@@ -19,7 +19,8 @@ from monai.transforms import (
     ToTensor,
     Compose,
     Orientation,
-    Resize
+    Resize,
+    ScaleIntensity 
 )
 
 
@@ -28,8 +29,7 @@ import pytorch_lightning as pl
 
 class TestCompose(Compose):
     def __call__(self, data, meta):
-
-        data = self.transforms[0](data) # addchannell
+        data = self.transforms[0](data)
         data, _, meta["affine"] = self.transforms[1](data, meta["affine"])# spacing
         data, _, meta["affine"] = self.transforms[2](data, meta["affine"])# Orientation
         data = self.transforms[3](data)  # reisze
@@ -72,28 +72,30 @@ class BrainDataModule(pl.LightningDataModule):
 
         train_transform = TestCompose(
         [
-            AddChannel(),
+            ScaleIntensity(),
             Spacing(
                 pixdim=(1.5,1.5,6),
             ),
             Orientation(axcodes="RAS"),
+            #NormalizeIntensity(nonzero=True, channel_wise=True),
+            AddChannel(),
             #Resize((256,256,36)),
             ResizeWithPadOrCrop((209, 220,  47)),
-            NormalizeIntensity(nonzero=True, channel_wise=True),
             RandScaleIntensity(factors=0.1, prob=0.5),
             RandShiftIntensity(offsets=0.1, prob=0.5),
             ToTensor(),
         ])
         val_transform = TestCompose(
         [
-            AddChannel(),
+            ScaleIntensity(),
             Spacing(
                 pixdim=(1.5,1.5,6),
             ),
             Orientation(axcodes="RAS"),
+            #NormalizeIntensity(nonzero=True, channel_wise=True),
+            AddChannel(),
             #Resize((256,256,36)),
             ResizeWithPadOrCrop((209, 220,  47)),
-            NormalizeIntensity(nonzero=True, channel_wise=True),
             ToTensor(),
         ])
 
