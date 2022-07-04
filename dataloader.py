@@ -74,11 +74,10 @@ class BrainDataModule(pl.LightningDataModule):
         [
             #ScaleIntensity(),
             AddChannel(),
-            Spacing(
-                pixdim=(1.5,1.5,6),
-            ),
+            #Spacing(pixdim=(1.5,1.5,6)),
             Orientation(axcodes="RAS"),
-            ResizeWithPadOrCrop((209, 220,  47)),
+            Resize((256,256,256)),
+            #ResizeWithPadOrCrop((209, 220,  47)),
             RandScaleIntensity(factors=0.1, prob=0.5),
             RandShiftIntensity(offsets=0.1, prob=0.5),
             NormalizeIntensity(nonzero=True, channel_wise=True),
@@ -88,12 +87,10 @@ class BrainDataModule(pl.LightningDataModule):
         [
             #ScaleIntensity(),
             AddChannel(),
-            Spacing(
-                pixdim=(1.5,1.5,6),
-            ),
+            Spacing(pixdim=(1.5,1.5,6)),
             Orientation(axcodes="RAS"),
-            #Resize((256,256,36)),
-            ResizeWithPadOrCrop((209, 220,  47)),
+            Resize((256,256,256)),
+            #ResizeWithPadOrCrop((209, 220,  47)),
             NormalizeIntensity(nonzero=True, channel_wise=True),
             ToTensor(),
         ])
