@@ -20,22 +20,22 @@ import numpy as np
 import random
 
 warnings.filterwarnings(action='ignore')
-pl.seed_everything(42)
+pl.seed_everything(42, workers=True)
 
-def torch_seed(random_seed=42):
+# def torch_seed(random_seed=42):
 
-    torch.manual_seed(random_seed)
+#     torch.manual_seed(random_seed)
 
-    torch.cuda.manual_seed(random_seed)
-    torch.cuda.manual_seed_all(random_seed) # if use multi-GPU
+#     torch.cuda.manual_seed(random_seed)
+#     torch.cuda.manual_seed_all(random_seed) # if use multi-GPU
 
-    torch.backends.cudnn.deterministic = True
-    torch.backends.cudnn.benchmark = False
+#     torch.backends.cudnn.deterministic = True
+#     torch.backends.cudnn.benchmark = False
 
-    np.random.seed(random_seed)
-    random.seed(random_seed)
+#     np.random.seed(random_seed)
+#     random.seed(random_seed)
     
-torch_seed(42)
+# torch_seed(42)
 
 
 def train(model_name,model_hparams,data_dir,save_dir,epoch,accelerator,device,batch_size=32,num_workers=3,pin_memory=True):
@@ -63,7 +63,7 @@ def train(model_name,model_hparams,data_dir,save_dir,epoch,accelerator,device,ba
         data_dm.prepare_data()
         trainer = pl.Trainer(accelerator=accelerator, devices=device, precision=16,max_epochs=epoch,callbacks=[checkpoint_callback],strategy="ddp",logger=tb_logger)
     else :
-        trainer = pl.Trainer(accelerator=accelerator, devices=device, precision=16,max_epochs=epoch,callbacks=[checkpoint_callback],logger=tb_logger)
+        trainer = pl.Trainer(accelerator=accelerator, devices=device, precision=16,max_epochs=epoch,callbacks=[checkpoint_callback],logger=tb_logger,deterministic=True )
 
     ##모델학습 
     trainer.fit(model,data_dm)
