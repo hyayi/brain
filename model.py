@@ -68,16 +68,16 @@ class MRSClassfication(pl.LightningModule):
 
         loss = self.loss(y_pred, y)
         self.log("train_loss", loss, on_epoch=True, prog_bar=True, logger=True)
-
-        return loss,y_pred, y
+        output = {'loss':loss,'y_pred':y_pred,'y':y}
+        return output
     
     def training_epoch_end(self, training_step_output):
         y_preds = []
         ys = []
 
-        for _,y_pred, y in validation_step_outputs:
-            y_preds.extend(y_pred)
-            ys.extend(y)
+        for output in validation_step_outputs:
+            y_preds.extend(output['y_pred'])
+            ys.extend(output['y'])
 
         y_preds = F.sigmoid(torch.stack(y_preds))
             
