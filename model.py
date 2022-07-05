@@ -75,7 +75,7 @@ class MRSClassfication(pl.LightningModule):
         y_preds = []
         ys = []
 
-        for output in validation_step_outputs:
+        for output in training_step_output:
             y_preds.extend(output['y_pred'])
             ys.extend(output['y'])
 
