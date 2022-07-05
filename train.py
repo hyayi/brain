@@ -20,7 +20,7 @@ import numpy as np
 import random
 
 warnings.filterwarnings(action='ignore')
-pl.seed_everything(42, workers=True)
+pl.seed_everything(42)
 
 def torch_seed(random_seed=42):
 
