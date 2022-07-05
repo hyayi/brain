@@ -51,7 +51,27 @@ class MRSClassfication(pl.LightningModule):
         loss = self.loss(y_pred, y)
         self.log("train_loss", loss, on_epoch=True, prog_bar=True, logger=True)
 
-        return loss
+        return loss,y_pred, y
+    
+    def training_epoch_end(self, training_step_output):
+        y_preds = []
+        ys = []
+
+        for _,y_pred, y in validation_step_outputs:
+            y_preds.extend(y_pred)
+            ys.extend(y)
+
+        y_preds = F.sigmoid(torch.stack(y_preds))
+            
+        ys = torch.stack(ys).type(torch.int)
+
+        auc  = AUROC(pos_label=1)
+        
+        auc_score = auc(y_preds.squeeze(),ys.squeeze())
+
+
+        #print(f"auc_score : {auc_score:.4f}")
+        self.log("train_auc", auc_score,prog_bar=True, logger=True)
 
     def validation_step(self, batch, batch_idx):
         x, y, _ = batch
