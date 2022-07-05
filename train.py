@@ -17,8 +17,22 @@ from pytorch_lightning import loggers as pl_loggers
 import shutil
 
 warnings.filterwarnings(action='ignore')
-
 pl.seed_everything(42, workers=True)
+
+def torch_seed(random_seed=42):
+
+    torch.manual_seed(random_seed)
+
+    torch.cuda.manual_seed(random_seed)
+    torch.cuda.manual_seed_all(random_seed) # if use multi-GPU
+
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+
+    np.random.seed(random_seed)
+    random.seed(random_seed)
+    
+torch_seed(42)
 
 
 def train(model_name,model_hparams,data_dir,save_dir,epoch,accelerator,device,batch_size=32,num_workers=3,pin_memory=True):
