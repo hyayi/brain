@@ -85,27 +85,27 @@ class BrainDataModule(pl.LightningDataModule):
 
     def setup(self, stage = None):
 
-        train_transform = TestCompose2(
+        train_transform = TestCompose(
         [
             #ScaleIntensity(),
             AddChannel(),
-            #Spacing(pixdim=(1.5,1.5,6)),
+            Spacing(pixdim=(1.5,1.5,6)),
             Orientation(axcodes="RAS"),
-            Resize((224,224,224)),
-            #ResizeWithPadOrCrop((209, 220,  47)),
+            #Resize((224,224,224)),
+            ResizeWithPadOrCrop((209, 220,  47)),
             RandScaleIntensity(factors=0.1, prob=0.5),
             RandShiftIntensity(offsets=0.1, prob=0.5),
             NormalizeIntensity(nonzero=True, channel_wise=True),
             ToTensor(),
         ])
-        val_transform = TestCompose2(
+        val_transform = TestCompose(
         [
             #ScaleIntensity(),
             AddChannel(),
-            #Spacing(pixdim=(1.5,1.5,6)),
+            Spacing(pixdim=(1.5,1.5,6)),
             Orientation(axcodes="RAS"),
-            Resize((224,224,224)),
-            #ResizeWithPadOrCrop((209, 220,  47)),
+            #Resize((224,224,224)),
+            ResizeWithPadOrCrop((209, 220,  47)),
             NormalizeIntensity(nonzero=True, channel_wise=True),
             ToTensor(),
         ])
