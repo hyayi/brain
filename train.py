@@ -87,7 +87,7 @@ if __name__=="__main__" :
     parser.add_argument("--data_dir", type=str, default=None)
     parser.add_argument("--save_dir", type=str, default=None)
     parser.add_argument("--batch_size",type=int, default=16)
-    parser.add_argument("--num_workers",type=int, default=0)
+    parser.add_argument("--num_workers",type=int, default=-1)
     parser.add_argument("--pin_memory",type=bool, default=True)
     parser.add_argument("--epoch",type=int, default=100)
     parser.add_argument("--accelerator",type=str, default='gpu')
