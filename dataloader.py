@@ -97,8 +97,8 @@ class BrainDataModule(pl.LightningDataModule):
             ResizeWithPadOrCrop((209, 220,  47)),
             RandScaleIntensity(factors=0.1, prob=0.5),
             RandShiftIntensity(offsets=0.1, prob=0.5),
-            NormalizeIntensity(nonzero=True, channel_wise=True),
             ToTensor(),
+            NormalizeIntensity(nonzero=True, channel_wise=True)
         ])
         val_transform = TestCompose(
         [
@@ -108,8 +108,8 @@ class BrainDataModule(pl.LightningDataModule):
             Orientation(axcodes="RAS"),
             #Resize((224,224,224)),
             ResizeWithPadOrCrop((209, 220,  47)),
-            NormalizeIntensity(nonzero=True, channel_wise=True),
             ToTensor(),
+            NormalizeIntensity(nonzero=True, channel_wise=True)
         ])
 
         if stage == 'fit' or stage is None:
