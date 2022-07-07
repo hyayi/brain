@@ -74,7 +74,7 @@ class BrainDataModule(pl.LightningDataModule):
     def prepare_data(self):
 
         self.train = pd.read_csv(f"{self.data_dir}/train.csv")
-        self.val = pd.read_csv(f"{self.data_dir}/validation.csv") 
+        self.val = pd.read_csv(f"{self.data_dir}/val.csv") 
         self.test = pd.read_csv(f"{self.data_dir}/test.csv")
         
         self.train['image'] = self.train['image'].apply(lambda x : f"{x}.nii.gz")
@@ -91,10 +91,10 @@ class BrainDataModule(pl.LightningDataModule):
         [
             #ScaleIntensity(),
             AddChannel(),
-            Spacing(pixdim=(1.5,1.5,6)),
+            Spacing(pixdim=(1,1,5)),
             Orientation(axcodes="RAS"),
             #Resize((224,224,224)),
-            ResizeWithPadOrCrop((209, 220,  47)),
+            ResizeWithPadOrCrop((315, 330,  67)),
             RandScaleIntensity(factors=0.1, prob=0.5),
             RandShiftIntensity(offsets=0.1, prob=0.5),
             ToTensor(),
@@ -104,10 +104,10 @@ class BrainDataModule(pl.LightningDataModule):
         [
             #ScaleIntensity(),
             AddChannel(),
-            Spacing(pixdim=(1.5,1.5,6)),
+            Spacing(pixdim=(1,1,5)),
             Orientation(axcodes="RAS"),
             #Resize((224,224,224)),
-            ResizeWithPadOrCrop((209, 220,  47)),
+            ResizeWithPadOrCrop((315, 330,  67)),
             ToTensor(),
             NormalizeIntensity(nonzero=True, channel_wise=True)
         ])
