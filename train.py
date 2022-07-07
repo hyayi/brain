@@ -48,16 +48,18 @@ def train(model_name,model_hparams,data_dir,save_dir,epoch,accelerator,device,ba
     os.makedirs(f"{weight_path}", exist_ok=True)
     
     if os.path.exists(logs_path):
-        shutil.rmtree(logs_path)
+        log_folder_num = len(os.listdir(logs_path))
+        os.makedirs(f"{logs_path}{log_folder_num+1}/", exist_ok=True)
         
     if os.path.exists(weight_path):
-        shutil.rmtree(weight_path)
+        weight_folder_num = len(os.listdir(weight_path))
+        os.makedirs(f"{weight_path}{weight_folder_num+1}/", exist_ok=True)
     
     model = MRSClassfication(model_name,model_hparams)
     print(model)
     data_dm = BrainDataModule(data_dir,batch_size,num_workers,pin_memory)
-    checkpoint_callback = pl.callbacks.ModelCheckpoint(dirpath=f"{weight_path}", save_top_k=1, monitor="val_auc",filename=f'{model_name}'+'-{epoch:02d}-{val_auc:.2f}',mode='max')
-    tb_logger = pl_loggers.TensorBoardLogger(save_dir=f"{logs_path}")
+    checkpoint_callback = pl.callbacks.ModelCheckpoint(dirpath=f"{weight_path}{weight_folder_num+1}/", save_top_k=1, monitor="val_auc",filename=f'{model_name}'+'-{epoch:02d}-{val_auc:.2f}',mode='max')
+    tb_logger = pl_loggers.TensorBoardLogger(save_dir=f"{logs_path}{log_folder_num+1}/")
     
     if device > 1:
         data_dm.prepare_data()
