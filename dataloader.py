@@ -9,56 +9,11 @@ from torch.utils.data import DataLoader
 
 import monai
 from monai.data import ImageDataset
-from monai.transforms import (
-    Spacing,
-    ResizeWithPadOrCrop,
-    NormalizeIntensity,
-    AddChannel,
-    RandScaleIntensity,
-    RandShiftIntensity,
-    ToTensor,
-    Compose,
-    Orientation,
-    Resize,
-    ScaleIntensity 
-)
+from monai.transforms import LoadImaged, AddChanneld, Orientationd, ScaleIntensityd, RandRotated,Resized, RandShiftIntensityd, EnsureTyped
 import numpy as np
 import random
 import pytorch_lightning as pl
-
-
-
-
-class TestCompose(Compose):
-    def __call__(self, data, meta):
-        data = self.transforms[0](data)
-        data, _, meta["affine"] = self.transforms[1](data, meta["affine"])# spacing
-        data, _, meta["affine"] = self.transforms[2](data, meta["affine"])# Orientation
-        data = self.transforms[3](data)  # reisze
-        data = self.transforms[4](data) # NormalizeIntensity
-
-        if len(self.transforms) > 6: 
-            data = self.transforms[5](data) # RandScaleIntensity
-            data = self.transforms[6](data) # RandShiftIntensity
-
-        data = self.transforms[-1](data) # totensro
-
-        return data,meta
-    
-class TestCompose2(Compose):
-    def __call__(self, data, meta):
-        data = self.transforms[0](data)
-        #data, _, meta["affine"] = self.transforms[1](data, meta["affine"])# spacing
-        data, _, meta["affine"] = self.transforms[1](data, meta["affine"])# Orientation
-        data = self.transforms[2](data)  # reisze
-        
-        if len(self.transforms) > 5: 
-            data = self.transforms[3](data) # RandScaleIntensity
-            data = self.transforms[4](data) # RandShiftIntensity
-
-        data = self.transforms[-1](data) # totensro
-
-        return data,meta
+from dataset import MRSDataset
 
 
 class BrainDataModule(pl.LightningDataModule):
@@ -85,38 +40,39 @@ class BrainDataModule(pl.LightningDataModule):
         self.val['image'] = self.val['image'].apply(lambda x : os.sep.join([self.data_dir, x]))
         self.test['image'] = self.test['image'].apply(lambda x : os.sep.join([self.data_dir, x]))
 
+
+
     def setup(self, stage = None):
 
-        train_transform = TestCompose(
-        [
-            #ScaleIntensity(),
-            AddChannel(),
-            Spacing(pixdim=(1,1,5)),
-            Orientation(axcodes="RAS"),
-            #Resize((224,224,224)),
-            ResizeWithPadOrCrop((315, 330,  67)),
-            RandScaleIntensity(factors=0.1, prob=0.5),
-            RandShiftIntensity(offsets=0.1, prob=0.5),
-            ToTensor(),
-            NormalizeIntensity(nonzero=True, channel_wise=True)
-        ])
-        val_transform = TestCompose(
-        [
-            #ScaleIntensity(),
-            AddChannel(),
-            Spacing(pixdim=(1,1,5)),
-            Orientation(axcodes="RAS"),
-            #Resize((224,224,224)),
-            ResizeWithPadOrCrop((315, 330,  67)),
-            ToTensor(),
-            NormalizeIntensity(nonzero=True, channel_wise=True)
-        ])
+        train_transforms = Compose(
+            [
+                LoadImaged(keys="img"),
+                AddChanneld(keys="img"),
+                Orientationd(axcodes="SPL"),
+                ScaleIntensityd(keys=["img"]),
+                Resized(keys=["img"], spatial_size=(128, 256, 256)),
+                RandRotated(keys=["img"], range_x=np.pi / 12, prob=0.5, keep_size=True),
+                RandShiftIntensityd(keys=["img"],offsets=0.1, prob=0.5),
+                EnsureTyped(keys=["img"]),
+            ]
+        )
+        val_transforms = Compose(
+            [
+                LoadImaged(keys="img"),
+                AddChanneld(keys="img"),
+                Orientationd(axcodes="SPL"),
+                ScaleIntensityd(keys=["img"]),
+                Resized(keys=["img"], spatial_size=(128, 256, 256)),
+                EnsureTyped(keys=["img"]),
+            ]
+        )
 
         if stage == 'fit' or stage is None:
-            self.train_ds = ImageDataset(image_files=self.train['image'], labels=np.expand_dims(self.train['label'].values, axis=1).astype(np.float32), transform=train_transform,image_only=False,transform_with_metadata=True)
-            self.validation_ds = ImageDataset(image_files=self.val['image'], labels=np.expand_dims(self.val['label'].values, axis=1).astype(np.float32), transform=val_transform,image_only=False,transform_with_metadata=True)
+            self.train_ds = MRSDataset(data_df=self.train[['image','label']], transforms= train_transform)
+            self.validation_ds = MRSDataset(data_df=self.val[['image','label']], transforms= val_transform)
+
         if stage == 'test' or stage is None:
-            self.test_ds = ImageDataset(image_files=self.test['image'], labels=np.expand_dims(self.test['label'].values, axis=1).astype(np.float32), transform=val_transform,image_only=False,transform_with_metadata=True)
+            self.test_ds = MRSDataset(data_df=self.test[['image','label']], transforms= val_transform)
 
     def train_dataloader(self):
         return DataLoader(self.train_ds, batch_size=self.batch_size,num_workers=self.num_workers, pin_memory=self.pin_memory,shuffle=True,)
