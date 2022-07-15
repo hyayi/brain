@@ -5,23 +5,7 @@ import monai
 import numpy as np
 import random
 import pytorch_lightning as pl
-
-pl.seed_everything(42)
-
-def torch_seed(random_seed=42):
-
-    torch.manual_seed(random_seed)
-
-    torch.cuda.manual_seed(random_seed)
-    torch.cuda.manual_seed_all(random_seed) # if use multi-GPU
-
-    torch.backends.cudnn.deterministic = True
-    torch.backends.cudnn.benchmark = False
-
-    np.random.seed(random_seed)
-    random.seed(random_seed)
-    
-torch_seed(42)
+import renset_med
 
 class resnet50(nn.Module):
     def __init__(self,input_chanel=1,pretrained=True,num_class=1):
@@ -39,11 +23,13 @@ class resnet50(nn.Module):
 class resnet50_m(nn.Module):
     def __init__(self,n_input_channels=1,num_classes=1,pretrained_path=None):
         super().__init__()
-        self.model_ft = monai.networks.nets.resnet50(n_input_channels=n_input_channels, num_classes=num_classes)
+        self.model_ft = renset_med.resnet50(n_input_channels=n_input_channels, num_classes=num_classes)
         if pretrained_path is not None:
             pretrain = torch.load(pretrained_path)
-            pretrain['state_dict'] = {k.replace('module.', ''): v for k, v in pretrain['state_dict'].items()}
-            self.model_ft.load_state_dict(pretrain['state_dict'], strict=False)
+            model_dict = self.model_ft.state_dict()
+            pretrained_dict = {k: v for k, v in pretrain.items() if k in model_dict}
+            model_dict.update(pretrained_dict)
+            model_ft.load_state_dict(model_dict)
     
     def forward(self,x):
         out = self.model_ft(x)
