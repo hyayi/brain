@@ -36,7 +36,7 @@ class resnet50_m(nn.Module):
             model_dict = self.model_ft.state_dict()
             pretrained_dict = {k: v for k, v in pretrain.items() if k in model_dict}
             model_dict.update(pretrained_dict)
-            model_ft.load_state_dict(model_dict)
+            self.model_ft.load_state_dict(model_dict)
     
     def forward(self,x):
         out = self.model_ft(x)
