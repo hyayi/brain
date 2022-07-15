@@ -14,4 +14,4 @@ class MRSDataset(torch.utils.data.Dataset):
 
         image_dict = {'img' : self.data_df['image'][index]}
         label = torch.as_tensor(self.data_df['label'][index],dtype=torch.float)
-        return self.transforms(image_dict), label
+        return self.transforms(image_dict)['img'], label
