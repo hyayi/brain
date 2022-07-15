@@ -48,7 +48,7 @@ class BrainDataModule(pl.LightningDataModule):
             [
                 LoadImaged(keys="img"),
                 AddChanneld(keys="img"),
-                Orientationd(axcodes="SPL"),
+                Orientationd(keys='img',axcodes="SPL"),
                 ScaleIntensityd(keys=["img"]),
                 Resized(keys=["img"], spatial_size=(128, 256, 256)),
                 RandRotated(keys=["img"], range_x=np.pi / 12, prob=0.5, keep_size=True),
@@ -60,7 +60,7 @@ class BrainDataModule(pl.LightningDataModule):
             [
                 LoadImaged(keys="img"),
                 AddChanneld(keys="img"),
-                Orientationd(axcodes="SPL"),
+                Orientationd(keys='img',axcodes="SPL"),
                 ScaleIntensityd(keys=["img"]),
                 Resized(keys=["img"], spatial_size=(128, 256, 256)),
                 EnsureTyped(keys=["img"]),
