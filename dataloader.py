@@ -68,11 +68,11 @@ class BrainDataModule(pl.LightningDataModule):
         )
 
         if stage == 'fit' or stage is None:
-            self.train_ds = MRSDataset(data_df=self.train[['image','label']], transforms= train_transform)
-            self.validation_ds = MRSDataset(data_df=self.val[['image','label']], transforms= val_transform)
+            self.train_ds = MRSDataset(data_df=self.train[['image','label']], transforms= train_transforms)
+            self.validation_ds = MRSDataset(data_df=self.val[['image','label']], transforms= val_transforms)
 
         if stage == 'test' or stage is None:
-            self.test_ds = MRSDataset(data_df=self.test[['image','label']], transforms= val_transform)
+            self.test_ds = MRSDataset(data_df=self.test[['image','label']], transforms= val_transforms)
 
     def train_dataloader(self):
         return DataLoader(self.train_ds, batch_size=self.batch_size,num_workers=self.num_workers, pin_memory=self.pin_memory,shuffle=True,)
