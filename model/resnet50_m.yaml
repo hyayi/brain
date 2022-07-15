@@ -1,5 +1,9 @@
 model_name : "resnet50_m"
 model_hparams : 
-  n_input_channels : 1
+  sample_input_D : 64
+  sample_input_H : 256,
+  sample_input_W : 256,
   num_classes : 1
+  no_cuda : False
+  shortcut_type : 'A'
   pretrained_path : '/home/lab/inseo/brain/resnet_50_23dataset.pth'
