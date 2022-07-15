@@ -43,7 +43,7 @@ class MRSClassfication(pl.LightningModule):
         return self.model(x)
 
     def training_step(self, batch, batch_idx):
-        x, y, _ = batch
+        x, y = batch
 
         if self.model_name == 'ViT':
             y_pred,_ = self(x)
@@ -76,7 +76,7 @@ class MRSClassfication(pl.LightningModule):
         self.log("train_auc", auc_score,prog_bar=True, logger=True)
 
     def validation_step(self, batch, batch_idx):
-        x, y, _ = batch
+        x, y = batch
 
         if self.model_name == 'ViT':
             y_pred,_ = self(x)
@@ -112,7 +112,7 @@ class MRSClassfication(pl.LightningModule):
         return torch.optim.Adam(self.parameters(), lr=self.learning_rate, weight_decay=2e-5)
 
     def test_step(self, batch, batch_idx):
-        x, y, _ = batch
+        x, y = batch
         
         if self.model_name == 'ViT':
             y_pred,_ = self(x)
