@@ -9,7 +9,7 @@ from torch.utils.data import DataLoader
 
 import monai
 from monai.data import ImageDataset
-from monai.transforms import LoadImaged, AddChanneld, Orientationd, ScaleIntensityd, RandRotated,Resized, RandShiftIntensityd, EnsureTyped
+from monai.transforms import LoadImaged, AddChanneld, Orientationd, ScaleIntensityd, RandRotated,Resized, RandShiftIntensityd, EnsureTyped, Compose
 import numpy as np
 import random
 import pytorch_lightning as pl
