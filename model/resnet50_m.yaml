@@ -5,5 +5,5 @@ model_hparams :
   sample_input_W : 256,
   num_classes : 1
   no_cuda : False
-  shortcut_type : 'A'
+  shortcut_type : 'B'
   pretrained_path : '/home/lab/inseo/brain/resnet_50_23dataset.pth'
