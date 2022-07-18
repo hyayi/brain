@@ -9,7 +9,7 @@ from torch.utils.data import DataLoader
 
 import monai
 from monai.data import ImageDataset
-from monai.transforms import LoadImaged, AddChanneld, Orientationd, ScaleIntensityd, RandRotated,Resized, RandShiftIntensityd, EnsureTyped, Compose,Spacingd
+from monai.transforms import LoadImaged, AddChanneld, Orientationd, ScaleIntensityd, RandRotated,Resized, RandShiftIntensityd, EnsureTyped, Compose,Spacingd,RandAxisFlipd
 import numpy as np
 import random
 import pytorch_lightning as pl
@@ -52,8 +52,8 @@ class BrainDataModule(pl.LightningDataModule):
                 Orientationd(keys='img',axcodes="SPL"),
                 ScaleIntensityd(keys=["img"]),
                 Resized(keys=["img"], spatial_size=(64, 256, 256)),
-                RandRotated(keys=["img"], range_x=np.pi / 12, prob=0.5, keep_size=True),
-                RandShiftIntensityd(keys=["img"],offsets=0.1, prob=0.5),
+                RandRotated(keys=["img"], range_x=np.pi / 12, prob=0.3, keep_size=True),
+                RandAxisFlipd(keys=["img"],prob=0.3),
                 EnsureTyped(keys=["img"]),
             ]
         )
