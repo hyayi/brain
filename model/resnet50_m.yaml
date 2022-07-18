@@ -6,5 +6,5 @@ model_hparams :
   num_classes : 1
   no_cuda : False
   shortcut_type : 'B'
-  pretrained_path : '/home/lab/inseo/brain/resnet_50_23dataset.pth'
+  pretrained_path : '/home/lab/inseo/brain/resnet_10_23dataset.pth'
   new_classfier : False
