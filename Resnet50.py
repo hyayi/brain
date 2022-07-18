@@ -41,3 +41,25 @@ class resnet50_m(nn.Module):
     def forward(self,x):
         out = self.model_ft(x)
         return out 
+    
+class resnet10_m(nn.Module):
+    def __init__(self,sample_input_D,sample_input_H,sample_input_W,num_classes,no_cuda,shortcut_type,pretrained_path=None):
+        super().__init__()
+        self.model_ft = renset_med.resnet10(
+            sample_input_D = sample_input_D, 
+            sample_input_H = sample_input_H,
+            sample_input_W = sample_input_W,
+            num_classes = num_classes,
+            no_cuda = no_cuda,
+            shortcut_type = shortcut_type
+        )
+        if pretrained_path is not None:
+            pretrain = torch.load(pretrained_path)
+            model_dict = self.model_ft.state_dict()
+            pretrained_dict = {k: v for k, v in pretrain.items() if k in model_dict}
+            model_dict.update(pretrained_dict)
+            self.model_ft.load_state_dict(model_dict)
+    
+    def forward(self,x):
+        out = self.model_ft(x)
+        return out 
