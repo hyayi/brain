@@ -8,3 +8,4 @@ model_hparams :
   shortcut_type : 'B'
   pretrained_path : '/home/lab/inseo/brain/resnet_10_23dataset.pth'
   new_classfier : False
+  dropout_prob : 0.3
