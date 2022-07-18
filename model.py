@@ -4,7 +4,7 @@ import torch.nn.functional as F
 import monai
 import torch
 from torchmetrics import AUROC
-from Resnet50 import resnet50, resnet50_m
+from Resnet50 import resnet50, resnet50_m,resnet10_m
 import numpy as np
 import random
 
@@ -36,6 +36,8 @@ class MRSClassfication(pl.LightningModule):
             return resnet50(**model_hparams)
         elif model_name == 'resnet50_m':
             return resnet50_m(**model_hparams)
+        elif model_name == 'resnet10_m':
+            return resnet10_m(**model_hparams)
         else :
             assert False, f'Unknown model name "{model_name}".'
 
