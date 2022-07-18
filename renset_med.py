@@ -152,7 +152,9 @@ class ResNet(nn.Module):
         if self.new_classfier: 
             self.fc  = nn.Sequential(
                 nn.Linear(512 * block.expansion, 256 * block.expansion),
+                nn.ReLU(inplace=True),
                 nn.Linear(256*block.expansion , 128*block.expansion),
+                nn.ReLU(inplace=True),
                 nn.Linear(128*block.expansion , num_classes))
         else:
             self.fc  = nn.Linear(512 * block.expansion, num_classes)
