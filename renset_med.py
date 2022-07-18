@@ -118,6 +118,7 @@ class ResNet(nn.Module):
                  sample_input_H,
                  sample_input_W,
                  num_classes,
+                 dropout_prob=0.0,
                  new_classfier = False,
                  shortcut_type='B',
                  no_cuda = False):
@@ -148,6 +149,8 @@ class ResNet(nn.Module):
             block, 512, layers[3], shortcut_type, stride=1, dilation=4)
         
         self.avgpool  = nn.AdaptiveAvgPool3d((1,1,1))
+        
+        self.dropout = nn.Dropout(p=dropout_prob)
         
         if self.new_classfier: 
             self.fc  = nn.Sequential(
@@ -205,6 +208,7 @@ class ResNet(nn.Module):
         x = self.layer4(x)
         x = self.avgpool(x)
         x = x.view(x.size(0), -1)
+        x = self.dropout(x)
         x = self.fc(x)
         return x
 
