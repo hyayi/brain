@@ -54,6 +54,7 @@ class BrainDataModule(pl.LightningDataModule):
                 Resized(keys=["img"], spatial_size=(64, 256, 256)),
                 RandRotated(keys=["img"], range_x=np.pi / 12, prob=0.3, keep_size=True),
                 RandAxisFlipd(keys=["img"],prob=0.3),
+                RandAdjustContrastd(keys=["img"],prob=0.1)
                 EnsureTyped(keys=["img"]),
             ]
         )
