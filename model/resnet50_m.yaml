@@ -7,4 +7,5 @@ model_hparams :
   no_cuda : False
   shortcut_type : 'B'
   pretrained_path : '/home/lab/inseo/brain/resnet_50_23dataset.pth'
-  new_classfier : False
+  new_classfier : True
+  dropout_prob : 0.3
