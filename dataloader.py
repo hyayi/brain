@@ -48,7 +48,7 @@ class BrainDataModule(pl.LightningDataModule):
             [
                 LoadImaged(keys="img"),
                 AddChanneld(keys="img"),
-                Spacingd(keys='img',pixdim=(1,1,5)),
+                #Spacingd(keys='img',pixdim=(1,1,5)),
                 Orientationd(keys='img',axcodes="SPL"),
                 ScaleIntensityd(keys=["img"]),
                 Resized(keys=["img"], spatial_size=(64, 256, 256)),
