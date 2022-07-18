@@ -21,7 +21,7 @@ class resnet50(nn.Module):
         return out 
 
 class resnet50_m(nn.Module):
-    def __init__(self,sample_input_D,sample_input_H,sample_input_W,num_classes,no_cuda,shortcut_type,new_classfier,pretrained_path=None):
+    def __init__(self,sample_input_D,sample_input_H,sample_input_W,num_classes,no_cuda,shortcut_type,new_classfier,dropout_prob,pretrained_path=None):
         super().__init__()
         self.model_ft = renset_med.resnet50(
             sample_input_D = sample_input_D, 
@@ -31,6 +31,7 @@ class resnet50_m(nn.Module):
             no_cuda = no_cuda,
             shortcut_type = shortcut_type,
             new_classfier = new_classfier,
+            dropout_prob = dropout_prob
         )
         if pretrained_path is not None:
             pretrain = torch.load(pretrained_path)
@@ -44,7 +45,7 @@ class resnet50_m(nn.Module):
         return out 
     
 class resnet10_m(nn.Module):
-    def __init__(self,sample_input_D,sample_input_H,sample_input_W,num_classes,no_cuda,shortcut_type,new_classfier,pretrained_path=None):
+    def __init__(self,sample_input_D,sample_input_H,sample_input_W,num_classes,no_cuda,shortcut_type,new_classfier,dropout_prob,pretrained_path=None):
         super().__init__()
         self.model_ft = renset_med.resnet10(
             sample_input_D = sample_input_D, 
@@ -53,7 +54,8 @@ class resnet10_m(nn.Module):
             num_classes = num_classes,
             no_cuda = no_cuda,
             shortcut_type = shortcut_type,
-            new_classfier = new_classfier
+            new_classfier = new_classfier,
+            dropout_prob=dropout_prob
         )
         if pretrained_path is not None:
             pretrain = torch.load(pretrained_path)
