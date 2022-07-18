@@ -1,0 +1,10 @@
+model_name : "resnet10_m"
+model_hparams : 
+  sample_input_D : 64
+  sample_input_H : 256,
+  sample_input_W : 256,
+  num_classes : 1
+  no_cuda : False
+  shortcut_type : 'B'
+  pretrained_path : '/home/lab/inseo/brain/resnet_10_23dataset.pth'
+  new_classfier : True
